@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+@php
+    $setting = App\Models\SiteSetting::first();
+@endphp
+
+<title>MalickRoi - @yield('title')</title>
+
+@vite(['resources/js/app.js'])
+
+<!-- Fav Icon -->
+{{-- <link rel="icon" href="{{ asset('frontend/assets/images/favicon.ico') }}" type="image/x-icon"> --}}
+<link rel="icon" href="{{ url($setting->logo) }}" type="image/x-icon">
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link href="{{ asset('frontend/assets/css/font-awesome-all.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/flaticon.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/owl.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/bootstrap.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/jquery.fancybox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/animate.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/jquery-ui.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/nice-select.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/color/theme-color.css') }}" id="jssDefault" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/switcher-style.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/style.css') }}" rel="stylesheet">
+<link href="{{ asset('frontend/assets/css/responsive.css') }}" rel="stylesheet">
+
+<!-- messages flash -->
+@include('admin.partials.flash_style')
+<!-- messages flash -->
+
+<!-- jquery -->
+<script src="{{ asset('backend/assets/js/jquery.min.js') }}"></script>
+
+</head>
+
+
+<!-- page wrapper -->
+<body>
+
+    <div class="boxed_wrapper">
+
+
+        <!-- preloader -->
+        @include('frontend.home.preload')
+        <!-- preloader end -->
+
+
+        <!-- switcher menu -->
+
+        <!-- end switcher menu -->
+
+
+        <!-- main header -->
+        @include('frontend.home.header')
+        <!-- main-header end -->
+
+        <!-- Mobile Menu  -->
+        @include('frontend.home.mobile_menu')
+        <!-- End Mobile Menu -->
+
+
+        @yield('content')
+
+
+        <!-- main-footer -->
+        @include('frontend.home.footer')
+        <!-- main-footer end -->
+
+
+
+        <!--Scroll to top-->
+        <button class="scroll-top scroll-to-target" data-target="html">
+            <span class="fal fa-angle-up"></span>
+        </button>
+    </div>
+
+
+    <!-- jequery plugins -->
+    <script src="{{ asset('frontend/assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/popper.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/owl.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/wow.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/validation.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/jquery.fancybox.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/appear.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/scrollbar.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/isotope.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/jQuery.style.switcher.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/nav-tool.js') }}"></script>
+
+    <!-- map script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-CE0deH3Jhj6GN4YvdCFZS7DpbXexzGU"></script>
+    <script src="{{ asset('frontend/assets/js/gmaps.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/map-helper.js') }}"></script>
+
+    <!-- main-js -->
+    <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
+
+    <!-- boostrap pour chat live -->
+    <script src="{{ asset('frontend/assets/chatlive/propper.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/chatlive/bootstrap.min.js') }}"></script>
+
+    <!-- fash message -->
+    @include('admin.partials.flash_scripts')
+
+
+    <!-- fash message -->
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN':$('meta["csrf-token"]').attr('content')
+            }
+        })
+
+        // Ajout à la liste de souhaits
+        function addToWishList (property_id) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "/add-to-wishlist/"+property_id,
+
+                success:function(data) {
+                    // Start Message
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+
+                    if ($.isEmptyObject(data.error)) {
+
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success,
+                        })
+
+                    }else{
+
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error,
+                        })
+                    }
+                    // End Message
+                }
+            })
+        }
+    </script>
+
+
+</body><!-- End of .page_wrapper -->
+</html>

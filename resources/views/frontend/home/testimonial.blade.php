@@ -1,0 +1,34 @@
+@php
+    $testimonials = App\Models\Testimonial::latest()->get();
+@endphp
+
+
+<section class="testimonial-section bg-color-1 centred">
+    <div class="pattern-layer" style="background-image: url({{ asset('frontend/assets/images/shape/shape-1.png') }});"></div>
+    <div class="auto-container">
+        <div class="sec-title">
+            <h5>Témoignages</h5>
+            <h2>Ce qu'ils disent de nous</h2>
+        </div>
+        <div class="single-item-carousel owl-carousel owl-theme owl-dots-none nav-style-one">
+
+            @foreach ($testimonials as $item)
+            <div class="testimonial-block-one">
+                <div class="inner-box">
+                    <figure class="thumb-box">
+                        <img src="{{ !empty($item->image) ? url($item->image) : url('upload/no_image.jpg') }}" alt="{{ $item->name }}">
+                    </figure>
+                    <div class="text">
+                        <p>{!! $item->message !!}</p>
+                    </div>
+                    <div class="author-info">
+                        <h4>{{ $item->name }}</h4>
+                        <span class="designation">{{ $item->position }}</span>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+
+        </div>
+    </div>
+</section>
